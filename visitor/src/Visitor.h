@@ -20,9 +20,15 @@ public:
   Visitor() = default;
   virtual ~Visitor() = default;
 
-  virtual void Visit(const Entity *e) { throw "Not implemented !"; }
-  virtual void Visit(const Monster *m) { throw "Not implemented !"; }
-  virtual void Visit(const Hero *h) { throw "Not implemented !"; }
+  virtual void Visit(const Entity *e) {
+    throw std::runtime_error("Not implemented");
+  }
+  virtual void Visit(const Monster *m) {
+    throw std::runtime_error("Not implemented");
+  }
+  virtual void Visit(const Hero *h) {
+    throw std::runtime_error("Not implemented");
+  }
 
 private:
 };

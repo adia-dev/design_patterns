@@ -12,7 +12,7 @@ public:
   virtual ~Entity() = default;
 
   virtual std::string GetName() const { return "Entity"; }
-  virtual void Accept(Visitor v) const { v.Visit(this); }
+  virtual void Accept(Visitor &v) const { v.Visit(this); }
 
 protected:
 };
@@ -23,7 +23,7 @@ public:
   virtual ~Monster() = default;
 
   std::string GetName() const override { return "Monster"; }
-  void Accept(Visitor v) const override { v.Visit(this); }
+  void Accept(Visitor &v) const override { v.Visit(this); }
 };
 
 class Hero : public Entity {
@@ -32,5 +32,5 @@ public:
   virtual ~Hero() = default;
 
   std::string GetName() const override { return "Hero"; }
-  void Accept(Visitor v) const override { v.Visit(this); }
+  void Accept(Visitor &v) const override { v.Visit(this); }
 };
