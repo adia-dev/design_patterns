@@ -45,10 +45,12 @@ void Server::run() {
                          _fds[i].fd);
 
           std::cout << _fds[i].fd << ": " << _buffer << std::endl;
+          _fds[i].events = POLLOUT;
         }
         if (_fds[i].revents & POLLOUT) {
           // socket ready to be written to
-          send_message_to(_fds[i].fd, "Message received successfully");
+          send_message_to(_fds[i].fd, "Message received successfully\0");
+          _fds[i].events = POLLIN;
         }
         if (_fds[i].revents & (POLLHUP | POLLERR)) {
 
@@ -103,8 +105,7 @@ void Server::accept_connection() {
   _clients.push_back(std::make_unique<Client>(new_client));
 
   _fds[_clients.size()].fd = new_client.get_sockfd();
-  _fds[_clients.size()].events = POLLOUT;
-  _fds[_clients.size()].events = POLLIN;
+  _fds[_clients.size()].events = POLLIN | POLLOUT;
 }
 
 int Server::read_message_from(int sockfd) {

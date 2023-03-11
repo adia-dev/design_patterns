@@ -20,12 +20,22 @@ void Client::run() {
   std::cout << "Successfully connected on server at port: " << _addr.sin_port
             << std::endl;
 
-  send_message("%s", _name.c_str());
+  int bytes_sent = send_message("%s", _name.c_str());
+  int bytes_read = -1;
 
   while (true) {
     std::cout << "Write a message to the server: ";
     fgets(_buffer, MAX_BUFFER_SIZE, stdin);
 
-    send_message("%s", _buffer);
+    bytes_sent = send_message("%s", _buffer);
+    if (bytes_sent == -1)
+      handle_error("Client (%d) could not send message to the server.",
+                   _sockfd);
+
+    bytes_read = read_message();
+    if (bytes_read == -1)
+      handle_error("Client (%d) could read the incoming message", _sockfd);
+
+    std::cout << "server: " << _buffer << std::endl;
   }
 }
